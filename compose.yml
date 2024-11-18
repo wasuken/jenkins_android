@@ -1,0 +1,23 @@
+services:
+  jenkins:
+    build:
+      context: ./jenkins
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - android_sdk:/opt/android-sdk # Android SDKを永続化
+      - /var/run/docker.sock:/var/run/docker.sock # JenkinsからDocker操作するため
+      - ./src:/workground
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false"
+    user: root
+    restart: unless-stopped
+
+
+volumes:
+  jenkins_home:
+  android_sdk:
+
